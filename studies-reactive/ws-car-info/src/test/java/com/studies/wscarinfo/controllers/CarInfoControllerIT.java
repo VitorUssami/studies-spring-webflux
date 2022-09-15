@@ -49,7 +49,7 @@ public class CarInfoControllerIT {
     
     @AfterEach
     public void afterEach() {
-        repo.deleteAll();
+        repo.deleteAll().block();
     }
     
     @Test
@@ -62,9 +62,9 @@ public class CarInfoControllerIT {
             .bodyValue(car)
             .exchange()
             .expectStatus().isCreated()
-            .expectBody(CarInfo.class)
+            .expectBody(CarDTO.class)
             .consumeWith(result -> {
-                CarInfo carResponse = result.getResponseBody();
+                CarDTO carResponse = result.getResponseBody();
                 assertNotNull(carResponse.getCarInfoId());
             });
     }
