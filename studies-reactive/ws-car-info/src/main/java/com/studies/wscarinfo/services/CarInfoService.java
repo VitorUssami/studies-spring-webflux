@@ -5,7 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.studies.wscarinfo.domain.CarInfo;
-import com.studies.wscarinfo.dto.CarDTO;
+import com.studies.wscarinfo.dto.CarInfoDTO;
 import com.studies.wscarinfo.repositories.CarInfoRepository;
 
 import reactor.core.publisher.Flux;
@@ -25,7 +25,7 @@ public class CarInfoService {
     }
 
 
-    public Mono<CarDTO> create(CarDTO car) {
+    public Mono<CarInfoDTO> create(CarInfoDTO car) {
 
         CarInfo carInfo = CarInfo.builder().build();
         mapper.map(car, carInfo);
@@ -34,16 +34,16 @@ public class CarInfoService {
     }
 
 
-    public Flux<CarDTO> retrieve() {
+    public Flux<CarInfoDTO> retrieve() {
         return repo.findAll().map(this::entityToDTO);
     }
 
-    public Mono<CarDTO> retrieveById(String id) {
+    public Mono<CarInfoDTO> retrieveById(String id) {
         return repo.findById(id).map(this::entityToDTO);
     }
 
 
-    public Mono<CarDTO> update(String id, CarDTO car) {
+    public Mono<CarInfoDTO> update(String id, CarInfoDTO car) {
         
         CarInfo carInfo = CarInfo.builder().build();
         mapper.map(car, carInfo);
@@ -68,8 +68,8 @@ public class CarInfoService {
     }
     
 
-    private CarDTO entityToDTO(CarInfo car) {
-        CarDTO dto = CarDTO.builder().build();
+    private CarInfoDTO entityToDTO(CarInfo car) {
+        CarInfoDTO dto = CarInfoDTO.builder().build();
         mapper.map(car, dto);
         return dto;
     }

@@ -14,7 +14,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.reactive.server.WebTestClient;
 
 import com.studies.wscarinfo.domain.CarInfo;
-import com.studies.wscarinfo.dto.CarDTO;
+import com.studies.wscarinfo.dto.CarInfoDTO;
 import com.studies.wscarinfo.services.CarInfoService;
 
 import reactor.core.publisher.Flux;
@@ -34,7 +34,7 @@ public class CarInfoControllerUT {
     @Test
     public void createTest() {
         
-        Mono<CarDTO> mockedMono = Mono.just(CarDTO.builder().carInfoId("id").model("model1").modelDescription("desc1")
+        Mono<CarInfoDTO> mockedMono = Mono.just(CarInfoDTO.builder().carInfoId("id").model("model1").modelDescription("desc1")
                 .color("white").price(20.0).modelDate(2022).build());
         Mockito.when(service.create(Mockito.any())).thenReturn(mockedMono);
 
@@ -46,9 +46,9 @@ public class CarInfoControllerUT {
             .bodyValue(carTosend)
             .exchange()
             .expectStatus().isCreated()
-            .expectBody(CarDTO.class)
+            .expectBody(CarInfoDTO.class)
             .consumeWith(result -> {
-                CarDTO carResponse = result.getResponseBody();
+                CarInfoDTO carResponse = result.getResponseBody();
                 assertNotNull(carResponse.getCarInfoId());
                 assertEquals("id", carResponse.getCarInfoId());
             });
@@ -57,10 +57,10 @@ public class CarInfoControllerUT {
     @Test
     public void retrieveTest() {
 
-        List<CarDTO> list = List.of(
-                CarDTO.builder().model("model").modelDescription("desc").color("black").price(10.0).modelDate(2022)
+        List<CarInfoDTO> list = List.of(
+                CarInfoDTO.builder().model("model").modelDescription("desc").color("black").price(10.0).modelDate(2022)
                         .build(),
-                        CarDTO.builder().carInfoId("fixedId").model("model1").modelDescription("desc1").color("white")
+                        CarInfoDTO.builder().carInfoId("fixedId").model("model1").modelDescription("desc1").color("white")
                         .price(20.0).modelDate(2022).build());
 
         Mockito.when(service.retrieve()).thenReturn(Flux.fromIterable(list));
@@ -69,14 +69,14 @@ public class CarInfoControllerUT {
             .get().uri("/v1/carInfos")
             .exchange()
             .expectStatus().is2xxSuccessful()
-            .expectBodyList(CarDTO.class)
+            .expectBodyList(CarInfoDTO.class)
             .hasSize(2);
     }
     
     @Test
     public void retrieveByIdTest() {
         
-        Mono<CarDTO> mockedMono = Mono.just(CarDTO.builder().carInfoId("fixedId").model("model1")
+        Mono<CarInfoDTO> mockedMono = Mono.just(CarInfoDTO.builder().carInfoId("fixedId").model("model1")
                 .modelDescription("desc1").color("white").price(20.0).modelDate(2022).build());
         Mockito.when(service.retrieveById(Mockito.any())).thenReturn(mockedMono);
         
@@ -84,9 +84,9 @@ public class CarInfoControllerUT {
             .get().uri("/v1/carInfos/{id}", "fixedId")
             .exchange()
             .expectStatus().is2xxSuccessful()
-            .expectBody(CarDTO.class)
+            .expectBody(CarInfoDTO.class)
             .consumeWith(result -> {
-                CarDTO carResponse = result.getResponseBody();
+                CarInfoDTO carResponse = result.getResponseBody();
                 assertNotNull(carResponse);
                 assertEquals(carResponse.getModel(), "model1");
             });
@@ -95,11 +95,11 @@ public class CarInfoControllerUT {
     @Test
     public void updateTest() {
         
-        Mono<CarDTO> mockedMono = Mono.just(CarDTO.builder().carInfoId("id").model("model update")
+        Mono<CarInfoDTO> mockedMono = Mono.just(CarInfoDTO.builder().carInfoId("id").model("model update")
                 .modelDescription("desc1").color("white").price(20.0).modelDate(2022).build());
-        Mockito.when(service.update(Mockito.any(), Mockito.isA(CarDTO.class))).thenReturn(mockedMono);
+        Mockito.when(service.update(Mockito.any(), Mockito.isA(CarInfoDTO.class))).thenReturn(mockedMono);
         
-        CarDTO car = CarDTO.builder().model("model update").modelDescription("desc update").color("black update")
+        CarInfoDTO car = CarInfoDTO.builder().model("model update").modelDescription("desc update").color("black update")
                 .price(10.0).modelDate(2022).build();
         
         webTestClient
@@ -107,9 +107,9 @@ public class CarInfoControllerUT {
             .bodyValue(car)
             .exchange()
             .expectStatus().is2xxSuccessful()
-            .expectBody(CarDTO.class)
+            .expectBody(CarInfoDTO.class)
             .consumeWith(result -> {
-                CarDTO carResponse = result.getResponseBody();
+                CarInfoDTO carResponse = result.getResponseBody();
                 assertNotNull(carResponse);
                 assertEquals(carResponse.getModel(), "model update");
             });

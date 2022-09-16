@@ -19,7 +19,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.reactive.server.WebTestClient;
 
 import com.studies.wscarinfo.domain.CarInfo;
-import com.studies.wscarinfo.dto.CarDTO;
+import com.studies.wscarinfo.dto.CarInfoDTO;
 import com.studies.wscarinfo.repositories.CarInfoRepository;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -55,16 +55,16 @@ public class CarInfoControllerIT {
     @Test
     public void createTest() {
         
-        CarDTO car = CarDTO.builder().model("model createTest").modelDescription("desc").color("black").price(10.0).modelDate(2022).build();
+        CarInfoDTO car = CarInfoDTO.builder().model("model createTest").modelDescription("desc").color("black").price(10.0).modelDate(2022).build();
         
         webTestClient
             .post().uri("/v1/carInfos")
             .bodyValue(car)
             .exchange()
             .expectStatus().isCreated()
-            .expectBody(CarDTO.class)
+            .expectBody(CarInfoDTO.class)
             .consumeWith(result -> {
-                CarDTO carResponse = result.getResponseBody();
+                CarInfoDTO carResponse = result.getResponseBody();
                 assertNotNull(carResponse.getCarInfoId());
             });
     }
@@ -96,7 +96,7 @@ public class CarInfoControllerIT {
             .get().uri("/v1/carInfos")
             .exchange()
             .expectStatus().is2xxSuccessful()
-            .expectBodyList(CarDTO.class)
+            .expectBodyList(CarInfoDTO.class)
             .hasSize(2);
     }
     
@@ -107,9 +107,9 @@ public class CarInfoControllerIT {
             .get().uri("/v1/carInfos/{id}", "fixedId")
             .exchange()
             .expectStatus().is2xxSuccessful()
-            .expectBody(CarDTO.class)
+            .expectBody(CarInfoDTO.class)
             .consumeWith(result -> {
-                CarDTO carResponse = result.getResponseBody();
+                CarInfoDTO carResponse = result.getResponseBody();
                 assertNotNull(carResponse);
                 assertEquals(carResponse.getModel(), "model1");
             });
@@ -146,9 +146,9 @@ public class CarInfoControllerIT {
             .bodyValue(car)
             .exchange()
             .expectStatus().is2xxSuccessful()
-            .expectBody(CarDTO.class)
+            .expectBody(CarInfoDTO.class)
             .consumeWith(result -> {
-                CarDTO carResponse = result.getResponseBody();
+                CarInfoDTO carResponse = result.getResponseBody();
                 assertNotNull(carResponse);
                 assertEquals(carResponse.getModel(), "model update");
             });

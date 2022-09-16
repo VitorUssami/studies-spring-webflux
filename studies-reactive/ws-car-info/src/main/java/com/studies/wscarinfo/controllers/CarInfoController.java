@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.studies.wscarinfo.dto.CarDTO;
+import com.studies.wscarinfo.dto.CarInfoDTO;
 import com.studies.wscarinfo.services.CarInfoService;
 
 import reactor.core.publisher.Flux;
@@ -35,24 +35,24 @@ public class CarInfoController {
 
     @PostMapping("/carInfos")
     @ResponseStatus(HttpStatus.CREATED)
-    public Mono<CarDTO> create(@RequestBody @Valid CarDTO car) {
+    public Mono<CarInfoDTO> create(@RequestBody @Valid CarInfoDTO car) {
         return service.create(car);
     }
     
     @GetMapping("/carInfos")
-    public Flux<CarDTO> retrieve(){
+    public Flux<CarInfoDTO> retrieve(){
         return service.retrieve();
     }
     
     @GetMapping("/carInfos/{id}")
-    public Mono<ResponseEntity<CarDTO>> retrieveById(@PathVariable String id){
+    public Mono<ResponseEntity<CarInfoDTO>> retrieveById(@PathVariable String id){
         return service.retrieveById(id)
                 .map(car -> ResponseEntity.ok().body(car))
                 .switchIfEmpty(Mono.just(ResponseEntity.notFound().build()));
     }
 
     @PutMapping("/carInfos/{id}")
-    public Mono<ResponseEntity<CarDTO>> update(@PathVariable String id, @RequestBody CarDTO carInfo) {
+    public Mono<ResponseEntity<CarInfoDTO>> update(@PathVariable String id, @RequestBody CarInfoDTO carInfo) {
         return service.update(id, carInfo)
                 .map(car -> ResponseEntity.ok().body(car))
                 .switchIfEmpty(Mono.just(ResponseEntity.notFound().build()));

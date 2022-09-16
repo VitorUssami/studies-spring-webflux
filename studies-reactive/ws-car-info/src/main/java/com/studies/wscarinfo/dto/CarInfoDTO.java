@@ -13,7 +13,7 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 @Builder
-public class CarDTO implements Serializable{
+public class CarInfoDTO implements Serializable{
     
     private static final long serialVersionUID = 4335061779539652040L;
 
