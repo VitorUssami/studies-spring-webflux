@@ -20,6 +20,7 @@
     <modules>
         <module>reactor</module>
         <module>ws-car-info</module>
+        <module>ws-car-review</module>
     </modules>
     
     
