@@ -21,6 +21,7 @@
         <module>reactor</module>
         <module>ws-car-info</module>
         <module>ws-car-review</module>
+        <module>ws-car-service</module>
     </modules>
     
     
@@ -37,7 +38,13 @@
                 <artifactId>modelmapper</artifactId>
                 <version>3.1.0</version>
             </dependency>
-
+            
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-starter-contract-stub-runner</artifactId>
+                <version>3.1.4</version>
+                <scope>test</scope>
+            </dependency>
         </dependencies>
     </dependencyManagement>
     
