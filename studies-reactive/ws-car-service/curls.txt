@@ -22,4 +22,6 @@ curl -i \
 GETs
 curl -i http://localhost:8080/v1/cars/123
 
+curl -i http://localhost:8080/v1/cars/stream
+
 ----------

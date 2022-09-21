@@ -17,6 +17,8 @@ GETs
 curl -i http://localhost:8081/v1/carInfos
 
 curl -i http://localhost:8081/v1/carInfos/123
+
+curl -i http://localhost:8081/v1/carInfos/stream
 ----------
 
 

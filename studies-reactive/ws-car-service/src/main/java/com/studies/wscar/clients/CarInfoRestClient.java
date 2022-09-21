@@ -1,7 +1,5 @@
 package com.studies.wscar.clients;
 
-import java.time.Duration;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
@@ -11,10 +9,8 @@ import org.springframework.web.reactive.function.client.WebClient;
 import com.studies.wscar.dto.CarInfoDTO;
 import com.studies.wscar.utils.RetryUtils;
 
-import reactor.core.Exceptions;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-import reactor.util.retry.Retry;
-import reactor.util.retry.RetryBackoffSpec;
 
 @Component
 public class CarInfoRestClient {
@@ -56,6 +52,21 @@ public class CarInfoRestClient {
 //            .retryWhen(retrySpecVar) //using variable
             .retryWhen(RetryUtils.retrySpec()) 
             .log();
+    }
+    
+    public Flux<CarInfoDTO> stream(){
+        return webClient.get()
+                .uri(carInfoURL+"/stream")
+                .retrieve()
+                .onStatus(HttpStatus::is4xxClientError, response->{
+                    return response.bodyToMono(String.class).flatMap(resp -> Mono.error(new CarInfoClientException(resp, response.statusCode())));
+                })
+                .onStatus(HttpStatus::is5xxServerError, response->{
+                    return response.bodyToMono(String.class).flatMap(resp -> Mono.error(new CarInfoServerException(resp)));
+                })
+                .bodyToFlux(CarInfoDTO.class)
+                .retryWhen(RetryUtils.retrySpec()) 
+                .log();
     }
     
     public static class CarInfoClientException extends RuntimeException {

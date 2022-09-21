@@ -3,6 +3,8 @@ package com.studies.wscar.controllers;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -10,8 +12,10 @@ import org.springframework.web.bind.annotation.RestController;
 import com.studies.wscar.clients.CarInfoRestClient;
 import com.studies.wscar.clients.CarReviewsRestClient;
 import com.studies.wscar.dto.CarDTO;
+import com.studies.wscar.dto.CarInfoDTO;
 import com.studies.wscar.dto.CarReviewDTO;
 
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 @RestController
@@ -36,5 +40,10 @@ public class CarController {
                                         return list.map(reviews-> new CarDTO(info, reviews));
                                     });
         return retrieve;
+    }
+    
+    @GetMapping(value="/cars/stream", produces = MediaType.APPLICATION_NDJSON_VALUE)
+    public Flux<CarInfoDTO> stream() {
+        return infoClient.stream();
     }
 }

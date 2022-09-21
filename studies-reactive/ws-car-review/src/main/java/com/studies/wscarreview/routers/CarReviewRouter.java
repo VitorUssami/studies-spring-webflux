@@ -20,7 +20,8 @@ public class CarReviewRouter {
                     builder.POST("", request->handler.create(request))
                            .GET("", request->handler.retrieve(request))
                            .PUT("/{id}", request->handler.update(request))
-                           .DELETE("/{id}", request->handler.delete(request));
+                           .DELETE("/{id}", request->handler.delete(request))
+                           .GET("/stream", request->handler.stream(request));
                 })
                 .build();
     }

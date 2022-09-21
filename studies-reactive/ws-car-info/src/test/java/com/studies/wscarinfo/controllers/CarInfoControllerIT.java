@@ -22,6 +22,9 @@ import com.studies.wscarinfo.domain.CarInfo;
 import com.studies.wscarinfo.dto.CarInfoDTO;
 import com.studies.wscarinfo.repositories.CarInfoRepository;
 
+import reactor.core.publisher.Flux;
+import reactor.test.StepVerifier;
+
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("test")
 @AutoConfigureWebClient
@@ -175,4 +178,34 @@ public class CarInfoControllerIT {
             .exchange()
             .expectStatus().isNoContent();
     }
+    
+    
+    @Test
+    public void retrieveStreamTest() {
+        
+        webTestClient
+            .post().uri("/v1/carInfos")
+            .bodyValue(CarInfoDTO.builder().model("model createTest").modelDescription("desc").color("black").price(10.0).modelDate(2022).build())
+            .exchange()
+            .expectStatus().isCreated()
+            .expectBody(CarInfoDTO.class)
+            .consumeWith(result -> {
+                CarInfoDTO carResponse = result.getResponseBody();
+                assertNotNull(carResponse.getCarInfoId());
+            });
+        
+        Flux<CarInfoDTO> resultFlux = webTestClient
+            .get().uri("/v1/carInfos/stream")
+            .exchange()
+            .expectStatus().is2xxSuccessful()
+            .returnResult(CarInfoDTO.class)
+            .getResponseBody();
+        
+        StepVerifier.create(resultFlux)
+            .assertNext(dto -> assertNotNull(dto.getCarInfoId()))
+            .thenCancel()
+            .verify();
+            
+    }
+    
 }

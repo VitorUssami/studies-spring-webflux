@@ -2,6 +2,7 @@ package com.studies.wscarreview.handlers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.server.ServerRequest;
 import org.springframework.web.reactive.function.server.ServerResponse;
@@ -11,11 +12,15 @@ import com.studies.wscarreview.services.CarReviewService;
 
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.core.publisher.Sinks;
+import reactor.core.publisher.Sinks.Many;
 
 @Component
 public class CarReviewsHandler {
     
     private CarReviewService service;
+    
+    private Many<CarReviewDTO> reviewsSink = Sinks.many().replay().latest();
     
     @Autowired
     public CarReviewsHandler(CarReviewService service) {
@@ -26,6 +31,7 @@ public class CarReviewsHandler {
         
         return request.bodyToMono(CarReviewDTO.class)
                 .flatMap(dto -> service.create(dto))
+                .doOnNext(dto-> reviewsSink.tryEmitNext(dto))
                 .flatMap(dto -> ServerResponse.status(HttpStatus.CREATED).bodyValue(dto));
         
 //        Mono<CarReviewDTO> mono = request.bodyToMono(CarReviewDTO.class);
@@ -52,6 +58,12 @@ public class CarReviewsHandler {
         
         String id = request.pathVariable("id");
         return service.delete(id).then(ServerResponse.noContent().build());
+    }
+
+    public  Mono<ServerResponse> stream(ServerRequest request) {
+        return ServerResponse.ok()
+                    .contentType(MediaType.APPLICATION_NDJSON)
+                    .body(reviewsSink.asFlux(), CarReviewDTO.class);
     }
 
 }

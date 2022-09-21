@@ -18,6 +18,7 @@ curl -i http://localhost:8082/v1/car-reviews
 
 curl -i http://localhost:8082/v1/car-reviews?carInfoId=1
 
+curl -i http://localhost:8082/v1/car-reviews/stream
 ----------
 
 
