@@ -1,0 +1,14 @@
+[
+    {
+      "carReviewId": "123",
+      "carInfoId": "1",
+      "comment": "abc 123",
+      "rating": 10
+    },
+    {
+      "carReviewId": "456",
+      "carInfoId": "1",
+      "comment": "abc 456",
+      "rating": 9
+    }
+]

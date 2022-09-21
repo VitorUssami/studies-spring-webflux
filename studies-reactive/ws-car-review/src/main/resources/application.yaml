@@ -1,0 +1,16 @@
+
+server:
+  port: 
+    8082
+
+spring:
+#  data:
+#    mongodb:
+#      port: 
+#        27017
+#      database: 
+#        CarsEmbeddedDB
+  mongodb:
+    embedded:
+      version: 
+        5.0.0

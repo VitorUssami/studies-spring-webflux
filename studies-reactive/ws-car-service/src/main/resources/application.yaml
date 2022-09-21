@@ -1,0 +1,8 @@
+
+server:
+  port: 
+    8080
+
+clients:
+  carInfoURL: http://localhost:8081/v1/carInfos
+  carReviewsURL:  http://localhost:8082/v1/car-reviews

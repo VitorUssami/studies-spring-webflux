@@ -1,0 +1,27 @@
+
+POSTs
+
+curl -i \
+-X POST http://localhost:8081/v1/carInfos \
+-H "Content-Type: application/json" \
+-d '{"carInfoId":123, "model": "model", "modelDescription":"desc", "color":"black", "price":"10", "modelDate":"2022"}'
+
+
+curl -i \
+-X POST http://localhost:8082/v1/car-reviews \
+-H "Content-Type: application/json" \
+-d '{"carReviewId":null, "carInfoId": "123", "comment":"desc", "rating":"10"}'
+
+curl -i \
+-X POST http://localhost:8082/v1/car-reviews \
+-H "Content-Type: application/json" \
+-d '{"carReviewId":null, "carInfoId": "123", "comment":"desc2", "rating":"5"}'
+----------
+
+
+GETs
+curl -i http://localhost:8080/v1/cars/123
+
+curl -i http://localhost:8080/v1/cars/stream
+
+----------

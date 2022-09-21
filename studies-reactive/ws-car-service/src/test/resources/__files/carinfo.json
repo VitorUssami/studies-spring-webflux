@@ -1,0 +1,8 @@
+{
+  "carInfoId": "1",
+  "model": "model abc",
+  "modelDescription": "desc model",
+  "color": "black",
+  "price": 100,
+  "modelDate": 2000
+}
