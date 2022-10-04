@@ -2,9 +2,9 @@
 
 > This project represents hands-on study, based on the [course Webflux  by Pragmatic Code School](https://www.udemy.com/course/build-reactive-restful-apis-using-spring-boot-webflux).
 
-# Summary
+## Summary
 
-## **Hands-on using Spring Webflux and MongoDB**
+### **Hands-on using Spring Webflux and MongoDB**
 
 <p style="float:left">
     <img src="https://img.shields.io/badge/Java%2016-ED8B00?style=plastic&logo=java&logoColor=white" /> 
@@ -37,3 +37,24 @@ The project is organized in four maven modules:
     - *server port: 8080*     
 
 
+### **Project Overview**
+
+![overview](/docs/assets/images/overview.png)
+
+
+### **Instructions**
+
+#### Build
+```
+cd studies-reactive/
+mvn clean install
+```
+
+#### Run
+```
+mvn spring-boot:run
+```
+
+#### Test
+
+Each project has a file called "curls.txt" with some curls samples to validate the endpoints.
